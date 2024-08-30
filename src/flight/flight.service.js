@@ -13,7 +13,7 @@ const getAllFlight = async () => {
 
 const createFlight = async (flightData) => {
   try {
-    const id = uuidv4();
+    const id = "FLGT-" + uuidv4();
 
     const newFlightData = {
       flightId: id,
