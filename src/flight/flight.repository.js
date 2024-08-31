@@ -6,27 +6,30 @@ const findAllFlights = async () => {
   return flight;
 };
 
-const findFlightByCountry = async (departure, arrival) => {
-  const flight = await prisma.flights.findUnique({
-    where: {
-      departureCountry: departure,
-      arrivalCountrym: arrival,
-    },
-  });
-};
-
 const insertFlight = async (flightData) => {
   const flight = await prisma.flights.create({
     data: {
-      flightId: flightData.flightId,
-      travelerId: flightData.travelerId,
-      flightNumber: flightData.flightNumber,
-      departureCountry: flightData.departure,
-      arrivalCountry: flightData.arrival,
-      createdAt: new Date(),
+      flight_id: flightData.flightId,
+      traveler_id: flightData.travelerId,
+      flight_number: flightData.flightNumber,
+      departure_country: flightData.departure,
+      arrival_country: flightData.arrival,
+      created_at: new Date(),
     },
   });
   return flight;
 };
 
-module.exports = { findAllFlights, findFlightByCountry, insertFlight };
+const findFlightByCountry = async (flightData) => {
+  const flight = await prisma.flights.findMany({
+    where: {
+      AND: [
+        { departure_country: flightData.departure },
+        { arrival_country: flightData.arrival },
+      ],
+    },
+  });
+  return flight;
+};
+
+module.exports = { findAllFlights, insertFlight, findFlightByCountry };

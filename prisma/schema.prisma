@@ -18,24 +18,26 @@ enum Role {
   traveler
 }
 
-model Users {
-  userId    String    @id @unique
-  name      String
-  email     String    @unique
-  password  String
-  role      Role      @default(client)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Flights   Flights[]
+model users {
+  user_id    String    @id @unique
+  name       String
+  email      String    @unique
+  password   String
+  role       Role      @default(client)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  flights    flights[]
 }
 
-model Flights {
-  flightId         String   @id @unique
-  traveler         Users    @relation(fields: [travelerId], references: [userId])
-  travelerId       String
-  flightNumber     String
-  departureCountry String
-  arrivalCountry   String
-  createdAt        DateTime
-  updatedAt        DateTime @updatedAt
+model flights {
+  flight_id      String   @id @unique
+  traveler       users    @relation(fields: [traveler_id], references: [user_id])
+  traveler_id    String
+  flight_number  String
+  departure_id   String
+  arrival_id     String
+  departure_date String
+  arrival_date   String
+  created_at     DateTime
+  updated_at     DateTime @updatedAt
 }

@@ -1,5 +1,9 @@
 const { v4: uuidv4 } = require("uuid");
-const { findAllFlights, insertFlight } = require("./flight.repository");
+const {
+  findAllFlights,
+  insertFlight,
+  findFlightByCountry,
+} = require("./flight.repository");
 
 const getAllFlight = async () => {
   try {
@@ -29,9 +33,18 @@ const createFlight = async (flightData) => {
   }
 };
 
-const getAllFlightByCountry = async () => {};
+const getAllFlightByCountry = async (flightData) => {
+  try {
+    const flight = await findFlightByCountry(flightData);
+
+    return flight;
+  } catch (error) {
+    throw Error(error.message);
+  }
+};
 
 module.exports = {
   getAllFlight,
   createFlight,
+  getAllFlightByCountry
 };
