@@ -1,4 +1,8 @@
 const { v4: uuidv4 } = require("uuid");
+const { getJson } = require("serpapi");
+const dotenv = require("dotenv");
+dotenv.config();
+
 const {
   findAllFlights,
   insertFlight,
@@ -15,9 +19,64 @@ const getAllFlight = async () => {
   }
 };
 
+const checkFlightExists = (flightData) => {
+  return new Promise((resolve, reject) => {
+    const params = {
+      engine: "google_flights",
+      departure_id: flightData.departureAirport,
+      arrival_id: flightData.arrivalAirport,
+      outbound_date: flightData.departureDate,
+      type: "2",
+      hl: "en",
+      api_key: process.env.SERPAPI_KEY,
+    };
+
+    getJson(params, (json) => {
+      // console.log(JSON.stringify(json, null, 2)); // Log the response
+
+      const allFlights = [];
+
+      if (Array.isArray(json.best_flights)) {
+        allFlights.push(...json.best_flights);
+      } else {
+        console.log("No best flights found.");
+      }
+
+      if (Array.isArray(json.other_flights)) {
+        allFlights.push(...json.other_flights);
+      } else {
+        console.log("No other flights found.");
+      }
+
+      // Check if the flight exists in allFlights
+      for (const flight of allFlights) {
+        for (const segment of flight.flights) {
+          if (segment.flight_number === flightData.flightNumber) {
+            console.log(
+              `Flight found: ${segment.flight_number} from ${segment.departure_airport.name} to ${segment.arrival_airport.name}`
+            );
+            return resolve(true); // Flight found
+          }
+        }
+      }
+
+      console.log("Flight not found");
+      return resolve(false); // Flight not found
+    });
+  });
+};
+
 const createFlight = async (flightData) => {
   try {
     const id = "FLGT-" + uuidv4();
+
+    const flightExists = await checkFlightExists(flightData);
+
+    console.log(flightExists);
+
+    if (!flightExists) {
+      throw new Error("Flight does not exist");
+    }
 
     const newFlightData = {
       flightId: id,
@@ -46,5 +105,5 @@ const getAllFlightByCountry = async (flightData) => {
 module.exports = {
   getAllFlight,
   createFlight,
-  getAllFlightByCountry
+  getAllFlightByCountry,
 };

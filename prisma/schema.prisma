@@ -30,14 +30,16 @@ model users {
 }
 
 model flights {
-  flight_id      String   @id @unique
-  traveler       users    @relation(fields: [traveler_id], references: [user_id])
-  traveler_id    String
-  flight_number  String
-  departure_id   String
-  arrival_id     String
-  departure_date String
-  arrival_date   String
-  created_at     DateTime
-  updated_at     DateTime @updatedAt
+  flight_id         String   @id @unique
+  traveler          users    @relation(fields: [traveler_id], references: [user_id])
+  traveler_id       String
+  flight_number     String
+  departure_country String
+  departure_airport String
+  arrival_country   String
+  arrival_airport   String
+  departure_date    String
+  arrival_date      String
+  created_at        DateTime
+  updated_at        DateTime @updatedAt
 }

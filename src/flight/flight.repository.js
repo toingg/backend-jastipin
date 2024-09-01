@@ -12,8 +12,12 @@ const insertFlight = async (flightData) => {
       flight_id: flightData.flightId,
       traveler_id: flightData.travelerId,
       flight_number: flightData.flightNumber,
-      departure_country: flightData.departure,
-      arrival_country: flightData.arrival,
+      departure_country: flightData.departureCountry,
+      departure_airport: flightData.departureAirport,
+      arrival_country: flightData.arrivalCountry,
+      arrival_airport: flightData.arrivalAirport,
+      departure_date: flightData.departureDate,
+      arrival_date: flightData.arrivalDate,
       created_at: new Date(),
     },
   });
@@ -33,3 +37,5 @@ const findFlightByCountry = async (flightData) => {
 };
 
 module.exports = { findAllFlights, insertFlight, findFlightByCountry };
+
+// filter tanggal terdekat

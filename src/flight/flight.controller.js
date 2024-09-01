@@ -20,9 +20,28 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { travelerId, flightNumber, departure, arrival } = req.body;
+  const {
+    travelerId,
+    flightNumber,
+    departureCountry,
+    departureAirport,
+    arrivalCountry,
+    arrivalAirport,
+    departureDate,
+    arrivalDate,
+  } = req.body;
+
   try {
-    flightData = { travelerId, flightNumber, departure, arrival };
+    flightData = {
+      travelerId,
+      flightNumber,
+      departureCountry,
+      departureAirport,
+      arrivalCountry,
+      arrivalAirport,
+      departureDate,
+      arrivalDate,
+    };
     const flight = await createFlight(flightData);
 
     res.send({
@@ -46,4 +65,5 @@ router.get("/:dep/:arr", async (req, res) => {
     data: flight,
   });
 });
+
 module.exports = router;
