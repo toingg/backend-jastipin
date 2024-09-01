@@ -3,6 +3,7 @@ const {
   getAllFlight,
   createFlight,
   getAllFlightByCountry,
+  checkFlightExists,
 } = require("./flight.service");
 const { flights } = require("../config/db");
 
@@ -42,12 +43,21 @@ router.post("/", async (req, res) => {
       departureDate,
       arrivalDate,
     };
+
+    const flightExists = await checkFlightExists(flightData);
+
+    if (!flightExists) {
+      return res.send({ error: "Flight does not exist" }).status(404);
+    }
+
     const flight = await createFlight(flightData);
 
-    res.send({
-      data: flight,
-      message: "Flight created succesfully !",
-    });
+    res
+      .send({
+        data: flight,
+        message: "Flight created succesfully !",
+      })
+      .status(200);
   } catch (error) {
     res.status(500).send(error.message);
   }

@@ -19,6 +19,37 @@ const getAllFlight = async () => {
   }
 };
 
+const createFlight = async (flightData) => {
+  try {
+    const id = "FLGT-" + uuidv4();
+
+    const newFlightData = {
+      flightId: id,
+      ...flightData,
+    };
+
+    const flight = await insertFlight(newFlightData);
+
+    return flight;
+  } catch (error) {
+    console.error("Error creating flight:", error); // Menambahkan logging untuk debugging
+    throw new Error("Error creating data to database");
+  }
+};
+
+const getAllFlightByCountry = async (flightData) => {
+  try {
+    const flight = await findFlightByCountry(flightData);
+
+    return flight;
+  } catch (error) {
+    throw Error(error.message);
+  }
+};
+
+// Functions that are not connected to the database
+
+// This function for validating flight based on flight number using SerpApi with Google Flight
 const checkFlightExists = (flightData) => {
   return new Promise((resolve, reject) => {
     const params = {
@@ -66,44 +97,9 @@ const checkFlightExists = (flightData) => {
   });
 };
 
-const createFlight = async (flightData) => {
-  try {
-    const id = "FLGT-" + uuidv4();
-
-    const flightExists = await checkFlightExists(flightData);
-
-    console.log(flightExists);
-
-    if (!flightExists) {
-      throw new Error("Flight does not exist");
-    }
-
-    const newFlightData = {
-      flightId: id,
-      ...flightData,
-    };
-
-    const flight = await insertFlight(newFlightData);
-
-    return flight;
-  } catch (error) {
-    console.error("Error creating flight:", error); // Menambahkan logging untuk debugging
-    throw new Error("Error creating data to database");
-  }
-};
-
-const getAllFlightByCountry = async (flightData) => {
-  try {
-    const flight = await findFlightByCountry(flightData);
-
-    return flight;
-  } catch (error) {
-    throw Error(error.message);
-  }
-};
-
 module.exports = {
   getAllFlight,
   createFlight,
   getAllFlightByCountry,
+  checkFlightExists,
 };
