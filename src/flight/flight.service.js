@@ -59,6 +59,8 @@ const checkFlightExists = (flightData) => {
       outbound_date: flightData.departureDate,
       type: "2",
       hl: "en",
+      gl: "id",
+      show_hidden: "true",
       api_key: process.env.SERPAPI_KEY,
     };
 
@@ -86,13 +88,16 @@ const checkFlightExists = (flightData) => {
             console.log(
               `Flight found: ${segment.flight_number} from ${segment.departure_airport.name} to ${segment.arrival_airport.name}`
             );
-            return resolve(true); // Flight found
+            return resolve({
+              exists: true,
+              bookingToken: flight.booking_token,
+            }); // Flight found
           }
         }
       }
 
       console.log("Flight not found");
-      return resolve(false); // Flight not found
+      return resolve({ exists: false }); // Flight not found
     });
   });
 };

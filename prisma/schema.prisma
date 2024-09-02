@@ -40,6 +40,7 @@ model flights {
   arrival_airport   String
   departure_date    String
   arrival_date      String
+  booking_token     String  
   created_at        DateTime
   updated_at        DateTime @updatedAt
 }

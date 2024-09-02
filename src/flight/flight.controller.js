@@ -44,11 +44,13 @@ router.post("/", async (req, res) => {
       arrivalDate,
     };
 
-    const flightExists = await checkFlightExists(flightData);
+    const flightCheckResult = await checkFlightExists(flightData);
 
-    if (!flightExists) {
+    if (!flightCheckResult.exists) {
       return res.send({ error: "Flight does not exist" }).status(404);
     }
+    // Add bookingToken to flightData
+    flightData.bookingToken = flightCheckResult.bookingToken;
 
     const flight = await createFlight(flightData);
 

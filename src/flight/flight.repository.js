@@ -18,6 +18,7 @@ const insertFlight = async (flightData) => {
       arrival_airport: flightData.arrivalAirport,
       departure_date: flightData.departureDate,
       arrival_date: flightData.arrivalDate,
+      booking_token: flightData.bookingToken,
       created_at: new Date(),
     },
   });
