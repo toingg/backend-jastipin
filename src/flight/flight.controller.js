@@ -33,7 +33,7 @@ router.post("/", async (req, res) => {
   } = req.body;
 
   try {
-    flightData = {
+    const flightData = {
       travelerId,
       flightNumber,
       departureCountry,

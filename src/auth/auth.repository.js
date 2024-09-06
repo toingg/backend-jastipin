@@ -5,17 +5,30 @@
 const prisma = require("../config/db");
 
 const insertUser = async (userData) => {
-  const user = await prisma.users.create({
-    data: {
-      id: userData.id,
-      name: userData.name,
-      email: userData.email,
-      password: userData.password,
-    },
-  });
+  try {
+    const existUser = await prisma.users.findFirst({
+      where: {
+        email: userData.userEmail,
+      },
+    });
 
-  return user;
+    if (existUser) {
+      throw new Error("Email already exists!");
+    }
+
+    const user = await prisma.users.create({
+      data: {
+        user_id: userData.userId,
+        name: userData.userName,
+        email: userData.userEmail,
+        password: userData.userPassword,
+      },
+    });
+
+    return user;
+  } catch (error) {
+    throw error;
+  }
 };
-
 
 module.exports = { insertUser };

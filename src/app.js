@@ -17,6 +17,9 @@ app.use("/country", countryList);
 const flightController = require("./flight/flight.controller");
 app.use("/flight", flightController);
 
+const authController = require("./auth/auth.controller");
+app.use("/auth", authController);
+
 app.listen(PORT, () => {
   console.log("Server Running at http://localhost:" + PORT);
 });
