@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { registerUser } = require("./auth.service");
+const { registerUser, loginUser } = require("./auth.service");
 
 router.post("/register", async (req, res) => {
   try {
@@ -26,6 +26,29 @@ router.post("/register", async (req, res) => {
     }
     res.status(500).send({
       message: "Server Error: Internal Server Error",
+    });
+  }
+});
+
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const userData = {
+      email,
+      password,
+    };
+
+    const user = await loginUser(userData);
+
+    res.send({
+      data: user,
+      message: "User login successfully!",
+      // token:
+    });
+  } catch (error) {
+    res.status(401).send({
+      message: error.message,
     });
   }
 });
