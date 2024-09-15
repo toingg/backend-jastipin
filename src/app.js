@@ -7,8 +7,12 @@ const PORT = process.env.PORT;
 
 app.use(express.json());
 
-app.get("/api", (req, res) => {
+app.get("/", (req, res) => {
   res.send("Hello World!");
+});
+
+app.get("/api", (req, res) => {
+  res.send("Hello ! Welcome to Jastipin API !");
 });
 
 const countryList = require("./country/country");
