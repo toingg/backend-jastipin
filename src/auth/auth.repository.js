@@ -13,13 +13,15 @@ const checkUserExist = async (userEmail) => {
   });
 
   return existUser;
+  // Jadi existUser disini kalau ada akan mereturn dari 1 row data user itu dalam bentuk json (bisa dicoba dengan console.log(user) pada func validateUser / insertUser)
+  // Jika tidak ada maka akan mereturn null
 };
 
 const insertUser = async (userData) => {
   try {
     const user = await checkUserExist(userData.email);
 
-    // console.log(user);
+    console.log(user);
 
     if (user) {
       throw new Error("Email already exists!");
@@ -47,13 +49,16 @@ const insertUser = async (userData) => {
 const validateUser = async (userData) => {
   try {
     const user = await checkUserExist(userData.email);
-    console.log(user);
+    // console.log(user);
 
     if (!user) {
       throw new Error("User not found");
     }
 
-    const isPasswordValid = await bcrpyt.compare(userData.password, user.password);
+    const isPasswordValid = await bcrpyt.compare(
+      userData.password,
+      user.password
+    );
 
     if (!isPasswordValid) {
       throw new Error("Invalid password !");
