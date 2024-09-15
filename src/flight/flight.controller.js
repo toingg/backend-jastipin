@@ -5,7 +5,7 @@ const {
   getAllFlightByCountry,
   checkFlightExists,
 } = require("./flight.service");
-const { flights } = require("../config/db");
+// const { prisma } = require("../config/db");
 
 const router = express.Router();
 

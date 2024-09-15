@@ -5,6 +5,7 @@
   "main": "./src/app.js",
   "scripts": {
     "postinstall": "prisma generate",
+    "build": "npx prisma generate && npx prisma migrate deploy",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./src/app.js",
     "start-dev": "nodemon ./src/app.js"
