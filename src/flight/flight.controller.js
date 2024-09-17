@@ -14,9 +14,16 @@ router.get("/", async (req, res) => {
   try {
     const flight = await getAllFlight();
 
-    res.status(200).send(flight);
+    res.status(200).send({
+      status: "success",
+      message: "Flight data retrieved successfully",
+      data: flight,
+    });
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).send({
+      status: "fail",
+      error: error.message,
+    });
   }
 });
 
@@ -54,28 +61,37 @@ router.post("/", async (req, res) => {
 
     const flight = await createFlight(flightData);
 
-    res
-      .send({
-        data: flight,
-        message: "Flight created succesfully !",
-      })
-      .status(200);
+    res.status(200).send({
+      status: "success",
+      message: "Flight created succesfully !",
+      data: flight,
+    });
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).send({
+      status: "fail",
+      error: error.message,
+    });
   }
 });
 
 router.get("/:dep/:arr", async (req, res) => {
-  const departure = req.params.dep.toUpperCase();
-  const arrival = req.params.arr.toUpperCase();
+  try {
+    const departure = req.params.dep.toUpperCase();
+    const arrival = req.params.arr.toUpperCase();
 
-  const flightData = { departure, arrival };
+    const flightData = { departure, arrival };
 
-  const flight = await getAllFlightByCountry(flightData);
+    const flight = await getAllFlightByCountry(flightData);
 
-  res.send({
-    data: flight,
-  });
+    res.status(200).send({
+      status: "success",
+      data: flight,
+    });
+  } catch (error) {
+    res.status(500).send({
+      status: "fail",
+      error: error.message,
+    });
+  }
 });
-
 module.exports = router;
