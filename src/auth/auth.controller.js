@@ -16,15 +16,17 @@ router.post("/register", async (req, res) => {
 
     const user = await registerUser(userData);
 
-    res.send({
-      data: user,
+    res.status(200).send({
+      status: "success",
       message: "User created successfully!",
+      data: user,
     });
   } catch (error) {
     if (error.message.includes("Email")) {
       return res.status(400).send({ message: error.message });
     }
     res.status(500).send({
+      status: "fail",
       message: "Server Error: Internal Server Error",
     });
   }
@@ -41,13 +43,15 @@ router.post("/login", async (req, res) => {
 
     const user = await loginUser(userData);
 
-    res.send({
-      data: user,
+    res.status(200).send({
+      status: "success",
       message: "User login successfully!",
+      data: user,
       // token:
     });
   } catch (error) {
     res.status(401).send({
+      status: "fail",
       message: error.message,
     });
   }
