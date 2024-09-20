@@ -2,6 +2,8 @@ const express = require("express");
 const dotenv = require("dotenv");
 dotenv.config();
 
+const { verifyToken } = require("./middleware/verifyToken");
+
 const app = express();
 const PORT = process.env.PORT;
 
@@ -16,10 +18,10 @@ app.get("/api", (req, res) => {
 });
 
 const countryList = require("./country/country");
-app.use("/country", countryList);
+app.use("/country", verifyToken, countryList);
 
 const flightController = require("./flight/flight.controller");
-app.use("/flight", flightController);
+app.use("/flight", verifyToken, flightController);
 
 const authController = require("./auth/auth.controller");
 app.use("/auth", authController);

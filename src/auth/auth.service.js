@@ -2,6 +2,10 @@
 // Kenapa dipisah? Supaya tanggung jawabnya ter-isolate, dan functions-nya
 // reusable
 const { v4: uuidv4 } = require("uuid");
+const jwt = require("jsonwebtoken");
+
+// const dotenv = require("dotenv");
+// dotenv.config();
 
 const { insertUser, validateUser } = require("./auth.repository");
 
@@ -30,7 +34,23 @@ const loginUser = async (userData) => {
   try {
     const user = await validateUser(userData);
 
-    return user;
+    const secret = process.env.JWT_SECRET;
+    console.log(secret)
+    const expiresIn = 60 * 60 * 24; // 1 Hour expire
+
+    const payload = {
+      user_id: user.user_id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    };
+    const token = jwt.sign(payload, secret, { expiresIn: expiresIn });
+
+    const data = {
+      user,
+      token,
+    };
+    return data;
   } catch (error) {
     throw error;
   }
