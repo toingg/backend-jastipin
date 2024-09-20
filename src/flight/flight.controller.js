@@ -40,6 +40,14 @@ router.post("/", async (req, res) => {
   } = req.body;
 
   try {
+    const today = new Date();
+    if (new Date(departureDate) < today) {
+      return res.status(400).send({
+        status: "fail",
+        error: "Departure date cannot be in the past.",
+      });
+    }
+
     const flightData = {
       travelerId,
       flightNumber,
