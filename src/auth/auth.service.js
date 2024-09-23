@@ -4,8 +4,8 @@
 const { v4: uuidv4 } = require("uuid");
 const jwt = require("jsonwebtoken");
 
-// const dotenv = require("dotenv");
-// dotenv.config();
+const dotenv = require("dotenv");
+dotenv.config();
 
 const { insertUser, validateUser } = require("./auth.repository");
 
