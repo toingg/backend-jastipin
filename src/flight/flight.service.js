@@ -1,4 +1,4 @@
-const { v4: uuidv4 } = require("uuid");
+const SnowFlakeId = require("snowflake-id").default;
 const { getJson } = require("serpapi");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -7,7 +7,13 @@ const {
   findAllFlights,
   insertFlight,
   findFlightByCountry,
+  updateFlightById,
 } = require("./flight.repository");
+
+// Initialize snowflake
+var snowflake = new SnowFlakeId({
+  mid: 27,
+});
 
 const getAllFlight = async () => {
   try {
@@ -21,7 +27,7 @@ const getAllFlight = async () => {
 
 const createFlight = async (flightData) => {
   try {
-    const id = "FLGT-" + uuidv4();
+    const id = "FLGT-" + snowflake.generate();
 
     const newFlightData = {
       flightId: id,
@@ -40,6 +46,16 @@ const createFlight = async (flightData) => {
 const getAllFlightByCountry = async (flightData) => {
   try {
     const flight = await findFlightByCountry(flightData);
+
+    return flight;
+  } catch (error) {
+    throw Error(error.message);
+  }
+};
+
+const editValidationAdmin = async (id, validationAdmin) => {
+  try {
+    const flight = await updateFlightById(id, validationAdmin);
 
     return flight;
   } catch (error) {
@@ -113,4 +129,5 @@ module.exports = {
   createFlight,
   getAllFlightByCountry,
   checkFlightExists,
+  editValidationAdmin,
 };

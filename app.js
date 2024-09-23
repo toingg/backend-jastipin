@@ -2,7 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const { verifyToken } = require("./middleware/verifyToken");
+const { verifyToken } = require("./src/middleware/verifyToken");
 
 const app = express();
 const PORT = process.env.PORT;
@@ -17,13 +17,13 @@ app.get("/api", (req, res) => {
   res.send("Hello ! Welcome to Jastipin API !");
 });
 
-const countryList = require("./country/country");
+const countryList = require("./src/country/country");
 app.use("/country", verifyToken, countryList);
 
-const flightController = require("./flight/flight.controller");
+const flightController = require("./src/flight/flight.controller");
 app.use("/flight", verifyToken, flightController);
 
-const authController = require("./auth/auth.controller");
+const authController = require("./src/auth/auth.controller");
 app.use("/auth", authController);
 
 app.listen(PORT, () => {

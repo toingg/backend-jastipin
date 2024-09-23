@@ -33,6 +33,7 @@ model flights {
   flight_id         String   @id @unique
   traveler          users    @relation(fields: [traveler_id], references: [user_id])
   traveler_id       String
+  passenger         String
   flight_number     String
   departure_country String
   departure_airport String
@@ -40,7 +41,8 @@ model flights {
   arrival_airport   String
   departure_date    String
   arrival_date      String
-  booking_token     String  
+  booking_token     String
+  validation_admin  Boolean  @default(false)
   created_at        DateTime
   updated_at        DateTime @updatedAt
 }

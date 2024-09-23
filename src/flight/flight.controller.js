@@ -4,6 +4,7 @@ const {
   createFlight,
   getAllFlightByCountry,
   checkFlightExists,
+  editValidationAdmin,
 } = require("./flight.service");
 // const { prisma } = require("../config/db");
 
@@ -31,6 +32,7 @@ router.post("/", async (req, res) => {
   const {
     travelerId,
     flightNumber,
+    passenger,
     departureCountry,
     departureAirport,
     arrivalCountry,
@@ -51,6 +53,7 @@ router.post("/", async (req, res) => {
     const flightData = {
       travelerId,
       flightNumber,
+      passenger,
       departureCountry,
       departureAirport,
       arrivalCountry,
@@ -99,6 +102,37 @@ router.get("/:dep/:arr", async (req, res) => {
     res.status(500).send({
       status: "fail",
       error: error.message,
+    });
+  }
+});
+
+router.patch("/:id", async (req, res) => {
+  try {
+    const flightId = req.params.id;
+    const flightData = req.body;
+
+    if (typeof flightData.validationAdmin !== "boolean")
+      return res.status(400).send({
+        status: "fail",
+        message: "validationAdmin must Boolean Type, true or false",
+      });
+    // Jika req.body yang diberikan adalah "true" (string)
+    // const validationAdmin = req.body.validationAdmin === "true";
+    // const flightData = {
+    //   validationAdmin,
+    // };
+
+    const flight = await editValidationAdmin(flightId, flightData);
+
+    res.status(200).send({
+      status: "success",
+      message: "Validation Admin has been changed",
+      data: flight,
+    });
+  } catch (error) {
+    res.status(500).send({
+      status: "fail",
+      message: error.message,
     });
   }
 });
