@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
@@ -23,6 +23,7 @@ model users {
   user_id    String    @id @unique
   name       String
   email      String    @unique
+  phone      String    @unique
   password   String
   role       Role      @default(client)
   created_at DateTime  @default(now())
@@ -35,6 +36,7 @@ model flights {
   traveler          users    @relation(fields: [traveler_id], references: [user_id])
   traveler_id       String
   passenger         String
+  airline           String
   flight_number     String
   departure_country String
   departure_airport String
@@ -43,6 +45,7 @@ model flights {
   departure_date    String
   arrival_date      String
   booking_token     String
+  img_ticket        String
   validation_admin  Boolean  @default(false)
   created_at        DateTime
   updated_at        DateTime @updatedAt

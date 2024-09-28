@@ -6,11 +6,12 @@ const { registerUser, loginUser } = require("./auth.service");
 router.post("/register", async (req, res) => {
   try {
     //middleware generate id
-    const { name, email, password } = req.body;
+    const { name, email, phone, password } = req.body;
 
     const userData = {
       name,
       email,
+      phone,
       password,
     };
 
@@ -27,7 +28,7 @@ router.post("/register", async (req, res) => {
     }
     res.status(500).send({
       status: "fail",
-      message: "Server Error: Internal Server Error",
+      message: `Server Error, Internal Server Error: ${error.message}`,
     });
   }
 });

@@ -31,6 +31,7 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   const {
     travelerId,
+    airline,
     flightNumber,
     passenger,
     departureCountry,
@@ -39,6 +40,7 @@ router.post("/", async (req, res) => {
     arrivalAirport,
     departureDate,
     arrivalDate,
+    imgTicket,
   } = req.body;
 
   try {
@@ -52,6 +54,7 @@ router.post("/", async (req, res) => {
 
     const flightData = {
       travelerId,
+      airline,
       flightNumber,
       passenger,
       departureCountry,
@@ -60,6 +63,7 @@ router.post("/", async (req, res) => {
       arrivalAirport,
       departureDate,
       arrivalDate,
+      imgTicket,
     };
 
     const flightCheckResult = await checkFlightExists(flightData);

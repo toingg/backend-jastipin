@@ -16,6 +16,7 @@ const registerUser = async (userData) => {
     id: id,
     name: userData.name,
     email: userData.email,
+    phone: userData.phone,
     password: userData.password,
   };
 
@@ -35,8 +36,8 @@ const loginUser = async (userData) => {
     const user = await validateUser(userData);
 
     const secret = process.env.JWT_SECRET;
-    console.log(secret)
-    const expiresIn = 60 * 60 * 24; // 1 Hour expire
+    // console.log(secret)
+    const expiresIn = 60 * 60 * 24 * 3; // 3 Days expire
 
     const payload = {
       user_id: user.user_id,

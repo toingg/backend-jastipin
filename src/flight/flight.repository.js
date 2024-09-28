@@ -12,6 +12,7 @@ const insertFlight = async (flightData) => {
       flight_id: flightData.flightId,
       traveler_id: flightData.travelerId,
       passenger: flightData.passenger,
+      airline: flightData.airline,
       flight_number: flightData.flightNumber,
       departure_country: flightData.departureCountry,
       departure_airport: flightData.departureAirport,
@@ -20,6 +21,7 @@ const insertFlight = async (flightData) => {
       departure_date: flightData.departureDate,
       arrival_date: flightData.arrivalDate,
       booking_token: flightData.bookingToken,
+      img_ticket: flightData.imgTicket,
       created_at: new Date(),
     },
   });
@@ -47,6 +49,7 @@ const updateFlightById = async (id, flightData) => {
     },
     data: {
       passenger: flightData.passenger,
+      airline: flightData.airline,
       flight_number: flightData.flightNumber,
       departure_country: flightData.departureCountry,
       departure_airport: flightData.departureAirport,
@@ -55,6 +58,7 @@ const updateFlightById = async (id, flightData) => {
       departure_date: flightData.departureDate,
       arrival_date: flightData.arrivalDate,
       booking_token: flightData.bookingToken,
+      img_ticket: flightData.imgTicket,
       validation_admin: flightData.validationAdmin,
     },
   });

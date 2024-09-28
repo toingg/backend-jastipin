@@ -21,7 +21,8 @@ const insertUser = async (userData) => {
   try {
     const user = await checkUserExist(userData.email);
 
-    console.log(user);
+    // Check user value, buat check ada user ngga
+    // console.log(user);
 
     if (user) {
       throw new Error("Email already exists!");
@@ -34,6 +35,7 @@ const insertUser = async (userData) => {
         user_id: userData.id,
         name: userData.name,
         email: userData.email,
+        phone: userData.phone,
         password: hashedPassword,
       },
     });
