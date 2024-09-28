@@ -21,7 +21,7 @@ const countryList = require("./src/country/country");
 app.use("/country", verifyToken, countryList);
 
 const flightController = require("./src/flight/flight.controller");
-app.use("/flight", verifyToken, flightController);
+app.use("/flight", flightController);
 
 const authController = require("./src/auth/auth.controller");
 app.use("/auth", authController);

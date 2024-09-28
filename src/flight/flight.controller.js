@@ -6,8 +6,8 @@ const {
   checkFlightExists,
   editValidationAdmin,
 } = require("./flight.service");
-// const { prisma } = require("../config/db");
 
+const { verifyToken } = require("../middleware/verifyToken");
 const router = express.Router();
 
 // Get all flights
@@ -27,6 +27,29 @@ router.get("/", async (req, res) => {
     });
   }
 });
+
+router.get("/:dep/:arr", async (req, res) => {
+  try {
+    const departure = req.params.dep.toUpperCase();
+    const arrival = req.params.arr.toUpperCase();
+
+    const flightData = { departure, arrival };
+
+    const flight = await getAllFlightByCountry(flightData);
+
+    res.status(200).send({
+      status: "success",
+      data: flight,
+    });
+  } catch (error) {
+    res.status(500).send({
+      status: "fail",
+      error: error.message,
+    });
+  }
+});
+
+router.use(verifyToken);
 
 router.post("/", async (req, res) => {
   const {
@@ -79,27 +102,6 @@ router.post("/", async (req, res) => {
     res.status(200).send({
       status: "success",
       message: "Flight created succesfully !",
-      data: flight,
-    });
-  } catch (error) {
-    res.status(500).send({
-      status: "fail",
-      error: error.message,
-    });
-  }
-});
-
-router.get("/:dep/:arr", async (req, res) => {
-  try {
-    const departure = req.params.dep.toUpperCase();
-    const arrival = req.params.arr.toUpperCase();
-
-    const flightData = { departure, arrival };
-
-    const flight = await getAllFlightByCountry(flightData);
-
-    res.status(200).send({
-      status: "success",
       data: flight,
     });
   } catch (error) {
