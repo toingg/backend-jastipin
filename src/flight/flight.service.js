@@ -4,7 +4,8 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const {
-  findAllFlights,
+  findAllFlightsForUser,
+  findAllFlightsForAdmin,
   insertFlight,
   findFlightByCountry,
   updateFlightById,
@@ -15,13 +16,23 @@ var snowflake = new SnowFlakeId({
   mid: 27,
 });
 
-const getAllFlight = async () => {
+const getAllFlightForUser = async () => {
   try {
-    const flight = await findAllFlights();
+    const flight = await findAllFlightsForUser();
 
     return flight;
   } catch (error) {
-    return "Error getting data from database";
+    throw new Error("Error getting data from database");
+  }
+};
+
+const getAllFlightForAdmin = async () => {
+  try {
+    const flight = await findAllFlightsForAdmin();
+
+    return flight;
+  } catch (error) {
+    throw new Error("Error getting data from database");
   }
 };
 
@@ -125,7 +136,8 @@ const checkFlightExists = async (flightData) => {
 };
 
 module.exports = {
-  getAllFlight,
+  getAllFlightForUser,
+  getAllFlightForAdmin,
   createFlight,
   getAllFlightByCountry,
   checkFlightExists,

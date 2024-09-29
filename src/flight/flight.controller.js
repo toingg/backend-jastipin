@@ -1,10 +1,11 @@
 const express = require("express");
 const {
-  getAllFlight,
+  getAllFlightForUser,
   createFlight,
   getAllFlightByCountry,
   checkFlightExists,
   editValidationAdmin,
+  getAllFlightForAdmin,
 } = require("./flight.service");
 
 const { verifyToken } = require("../middleware/verifyToken");
@@ -13,11 +14,28 @@ const router = express.Router();
 // Get all flights
 router.get("/", async (req, res) => {
   try {
-    const flight = await getAllFlight();
+    const flight = await getAllFlightForUser();
 
     res.status(200).send({
       status: "success",
       message: "Flight data retrieved successfully",
+      data: flight,
+    });
+  } catch (error) {
+    res.status(500).send({
+      status: "fail",
+      error: error.message,
+    });
+  }
+});
+
+router.get("/admin", async (req, res) => {
+  try {
+    const flight = await getAllFlightForAdmin();
+
+    res.status(200).send({
+      status: "success",
+      message: "Flight data for admin retrieved successfully",
       data: flight,
     });
   } catch (error) {

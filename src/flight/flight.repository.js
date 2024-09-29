@@ -1,8 +1,21 @@
 const prisma = require("../config/db");
 
-const findAllFlights = async () => {
-  const flight = await prisma.flights.findMany();
+const findAllFlightsForUser = async () => {
+  const flight = await prisma.flights.findMany({
+    where: {
+      validation_admin: true,
+    },
+  });
 
+  return flight;
+};
+
+const findAllFlightsForAdmin = async () => {
+  const flight = await prisma.flights.findMany({
+    where: {
+      validation_admin: false,
+    },
+  });
   return flight;
 };
 
@@ -34,6 +47,7 @@ const findFlightByCountry = async (flightData) => {
       AND: [
         { departure_country: flightData.departure },
         { arrival_country: flightData.arrival },
+        { validation_admin: true },
       ],
     },
   });
@@ -67,7 +81,8 @@ const updateFlightById = async (id, flightData) => {
 };
 
 module.exports = {
-  findAllFlights,
+  findAllFlightsForUser,
+  findAllFlightsForAdmin,
   insertFlight,
   findFlightByCountry,
   updateFlightById,
