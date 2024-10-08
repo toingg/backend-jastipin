@@ -1,4 +1,19 @@
 const express = require("express");
+const multer = require("multer");
+const SnowFlakeId = require("snowflake-id").default;
+const app = require("../config/firebase.config");
+
+var snowflake = new SnowFlakeId({
+  mid: 27,
+});
+
+const {
+  ref,
+  getDownloadURL,
+  uploadBytesResumable,
+  getStorage,
+} = require("firebase/storage");
+
 const {
   getAllFlightForUser,
   createFlight,
@@ -69,7 +84,11 @@ router.get("/:dep/:arr", async (req, res) => {
 
 router.use(verifyToken);
 
-router.post("/", async (req, res) => {
+//firebase
+const storage = getStorage();
+const upload = multer({ storage: multer.memoryStorage() });
+
+router.post("/", upload.single("imgTicket"), async (req, res) => {
   const {
     travelerId,
     airline,
@@ -81,18 +100,40 @@ router.post("/", async (req, res) => {
     arrivalAirport,
     departureDate,
     arrivalDate,
-    imgTicket,
   } = req.body;
 
   try {
     const today = new Date();
-    if (new Date(departureDate) < today) {
+    today.setHours(0, 0, 0, 0); // Set waktu ke 00:00:00 untuk hari ini
+    const depDate = new Date(departureDate);
+    depDate.setHours(0, 0, 0, 0); // Set waktu ke 00:00:00 untuk tanggal keberangkatan
+
+    if (depDate < today) {
       return res.status(400).send({
         status: "fail",
         error: "Departure date cannot be in the past.",
       });
     }
 
+    // < -- FIREBASE
+    const storageRef = ref(
+      storage,
+      `imgTicket/${req.file.originalname + " " + snowflake.generate()}`
+    );
+
+    const metadata = {
+      contentType: req.file.mimetype,
+    };
+
+    const snapshot = await uploadBytesResumable(
+      storageRef,
+      req.file.buffer,
+      metadata
+    );
+
+    const downloadURL = await getDownloadURL(snapshot.ref);
+
+    // FIREBASE -- >
     const flightData = {
       travelerId,
       airline,
@@ -104,7 +145,7 @@ router.post("/", async (req, res) => {
       arrivalAirport,
       departureDate,
       arrivalDate,
-      imgTicket,
+      imgTicket: downloadURL,
     };
 
     const flightCheckResult = await checkFlightExists(flightData);
@@ -123,6 +164,7 @@ router.post("/", async (req, res) => {
       data: flight,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).send({
       status: "fail",
       error: error.message,

@@ -5,3 +5,4 @@ rest.rest
 nginx.conf
 Dockerfile
 docker-compose.yml
+/uploads

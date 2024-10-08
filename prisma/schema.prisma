@@ -47,6 +47,6 @@ model flights {
   booking_token     String
   img_ticket        String
   validation_admin  Boolean  @default(false)
-  created_at        DateTime
+  created_at        DateTime @default(now())
   updated_at        DateTime @updatedAt
 }
