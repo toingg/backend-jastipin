@@ -164,7 +164,7 @@ router.post("/", upload.single("imgTicket"), async (req, res) => {
       data: flight,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).send({
       status: "fail",
       error: error.message,

@@ -22,7 +22,7 @@ const getAllFlightForUser = async () => {
 
     return flight;
   } catch (error) {
-    throw new Error("Error getting data from database");
+    throw error;
   }
 };
 
@@ -32,7 +32,7 @@ const getAllFlightForAdmin = async () => {
 
     return flight;
   } catch (error) {
-    throw new Error("Error getting data from database");
+    throw error;
   }
 };
 
@@ -50,7 +50,7 @@ const createFlight = async (flightData) => {
     return flight;
   } catch (error) {
     console.error("Error creating flight:", error); // Menambahkan logging untuk debugging
-    throw new Error("Error creating data to database");
+    throw error;
   }
 };
 
@@ -60,7 +60,7 @@ const getAllFlightByCountry = async (flightData) => {
 
     return flight;
   } catch (error) {
-    throw Error(error.message);
+    throw error;
   }
 };
 
@@ -70,7 +70,7 @@ const editValidationAdmin = async (id, validationAdmin) => {
 
     return flight;
   } catch (error) {
-    throw Error(error.message);
+    throw error;
   }
 };
 
